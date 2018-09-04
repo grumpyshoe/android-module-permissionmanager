@@ -51,10 +51,10 @@ Check permission grant state by calling `checkPermissions`.
 permissionManager.checkPermissions(
     activity = this,
     permissions = <array-of-permissions>,
-    onPermissionsGranted = {
+    onPermissionsGranted = { permission, requestCode ->
         // handle permissions granted
     },
-    onPermissionDenied = { permissions ->
+    onPermissionDenied = { permission, requestCode ->
         // handle permissions denied
     })
 ```
@@ -74,10 +74,10 @@ If the user denies a permission first but another action requests this again bec
 permissionManager.checkPermissions(
     activity = this,
     permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-    onPermissionsGranted = {
+    onPermissionsGranted = { permission, requestCode ->
         // handle permissions granted
     },
-    onPermissionDenied = { permissions ->
+    onPermissionDenied = { permission, requestCode ->
         // handle permissions denied
     },
     permissionRequestPreExecuteExplanation = PermissionRequestExplanation(
@@ -97,8 +97,6 @@ permissionManager.checkPermissions(
 ## Troubleshooting
 - Please make sure you have added corresponding permissions to yout Manifest, otherwise you get this response in Logcat without anythins noticable on UI-Screen:
 > PermissionManager: Permissions denied: [...]
-- If you are requesting the permissions `ACCESS_COARSE_LOCATION` and `ACCESS_FINE_LOCATION` be aware that *ACCESS_FINE_LOCATION* will mostly be granted while *ACCESS_COARSE_LOCATION* returns denied!
-See [StackOverflow](https://stackoverflow.com/a/33800252) for explaining this behavior.
 
 
 ## Need Help or something missing?
