@@ -25,13 +25,13 @@ class MainActivity : AppCompatActivity() {
 
             permissionManager.checkPermissions(
                     activity = this,
-                    permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    onPermissionsGranted = {
-                        Log.d("PermissionManager", "Permissions granted")
+                    permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+                    onPermissionsGranted = { permission, _ ->
+                        Log.d("PermissionManager", "Permissions granted: $permission")
                         result.onUI { it.text = "Permission Status:\n\n- GRANTED -" }
                     },
-                    onPermissionDenied = { permissions ->
-                        Log.d("PermissionManager", "Permissions denied: ${permissions.asList()}")
+                    onPermissionDenied = { permission, requestCode ->
+                        Log.d("PermissionManager", "Permissions denied: $permission ($requestCode)")
                         result.onUI { it.text = "Permission Status:\n\n- DENIED -" }
                     },
                     permissionRequestPreExecuteExplanation = PermissionRequestExplanation(

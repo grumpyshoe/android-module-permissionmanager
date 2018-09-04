@@ -23,7 +23,7 @@ interface PermissionManager {
      * check permission
      *
      */
-    fun checkPermissions(activity: Activity, permissions: Array<out String>, onPermissionsGranted: (() -> Unit)?, onPermissionDenied: ((Array<out String>) -> Unit)?, permissionRequestPreExecuteExplanation: PermissionRequestExplanation? = null, permissionRequestRetryExplanation: PermissionRequestExplanation? = null, requestCode: Int? = null): Boolean
+    fun checkPermissions(activity: Activity, permissions: Array<out String>, onPermissionsGranted: ((String, Int) -> Unit)?, onPermissionDenied: ((String, Int) -> Unit)?, permissionRequestPreExecuteExplanation: PermissionRequestExplanation? = null, permissionRequestRetryExplanation: PermissionRequestExplanation? = null, requestCode: Int? = null): Boolean
 
 
     /**
