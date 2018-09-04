@@ -22,7 +22,7 @@ allprojects {
 
 Add dependency to your app `build.gradle` :
 ```gradle
-implementation 'com.github.grumpyshoe:android-module-permissionmanager:1.1.0'
+implementation 'com.github.grumpyshoe:android-module-permissionmanager:1.2.0'
 ```
 
 
@@ -51,11 +51,8 @@ Check permission grant state by calling `checkPermissions`.
 permissionManager.checkPermissions(
     activity = this,
     permissions = <array-of-permissions>,
-    onPermissionsGranted = { permission, requestCode ->
-        // handle permissions granted
-    },
-    onPermissionDenied = { permission, requestCode ->
-        // handle permissions denied
+    onPermissionResult = { permissionResult ->
+        // handle permission result
     })
 ```
 
@@ -74,11 +71,8 @@ If the user denies a permission first but another action requests this again bec
 permissionManager.checkPermissions(
     activity = this,
     permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-    onPermissionsGranted = { permission, requestCode ->
-        // handle permissions granted
-    },
-    onPermissionDenied = { permission, requestCode ->
-        // handle permissions denied
+    onPermissionResult = { permissionResult ->
+        // handle permission result
     },
     permissionRequestPreExecuteExplanation = PermissionRequestExplanation(
             title = "Pre Custom Permission Hint",

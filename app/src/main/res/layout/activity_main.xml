@@ -9,13 +9,13 @@
     <TextView
         android:id="@+id/text"
         android:layout_width="wrap_content"
-        android:layout_height="99dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="44dp"
-        android:text="This App request the permissions:\n\n- Manifest.permission.ACCESS_FINE_LOCATION\n- Manifest.permission.ACCESS_COARSE_LOCATION\n\non button click."
+        android:text="This App request the permissions:\n\n- Manifest.permission.ACCESS_FINE_LOCATION\n- Manifest.permission.ACCESS_COARSE_LOCATION\n- Manifest.permission.READ_PHONE_STATE\n\non button click."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,15 +25,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
-        android:hint="Permission Status:\n\n- NOT REQUESTED -"
-        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        android:hint="Permission Status:\n\n- NOT REQUESTED -"
         app:layout_constraintBottom_toTopOf="@+id/button"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:gravity="center"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/text"
         app:layout_constraintTop_toBottomOf="@+id/text" />
 
     <Button
