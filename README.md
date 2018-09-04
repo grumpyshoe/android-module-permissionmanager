@@ -22,7 +22,7 @@ allprojects {
 
 Add dependency to your app `build.gradle` :
 ```gradle
-implementation 'com.github.grumpyshoe:android-module-permissionmanager:1.0.0'
+implementation 'com.github.grumpyshoe:android-module-permissionmanager:1.1.0'
 ```
 
 
@@ -98,7 +98,7 @@ permissionManager.checkPermissions(
 - Please make sure you have added corresponding permissions to yout Manifest, otherwise you get this response in Logcat without anythins noticable on UI-Screen:
 > PermissionManager: Permissions denied: [...]
 - If you are requesting the permissions `ACCESS_COARSE_LOCATION` and `ACCESS_FINE_LOCATION` be aware that *ACCESS_FINE_LOCATION* will mostly be granted while *ACCESS_COARSE_LOCATION* returns denied!
-See [StackOverflow](https://stackoverflow.com/a/33800252) for explaining this behavior. 
+See [StackOverflow](https://stackoverflow.com/a/33800252) for explaining this behavior.
 
 
 ## Need Help or something missing?

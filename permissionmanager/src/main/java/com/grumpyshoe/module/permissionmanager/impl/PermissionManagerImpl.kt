@@ -23,8 +23,8 @@ import kotlin.coroutines.experimental.coroutineContext
 object PermissionManagerImpl : PermissionManager {
 
     private var usedRequestCode = PermissionManager.DEFAULT_PERMISSION_REQUEST_CODE
-    private var onPermissionsGranted: (() -> Unit)? = null
-    private var onPermissionDenied: ((Array<out String>) -> Unit)? = null
+    private var onPermissionsGranted: ((String, Int) -> Unit)? = null
+    private var onPermissionDenied: ((String, Int) -> Unit)? = null
 
 
     /**
@@ -36,15 +36,15 @@ object PermissionManagerImpl : PermissionManager {
             if (grantResults.isNotEmpty()) {
                 permissions.forEachIndexed { index, permission ->
                     if (grantResults[index] != PackageManager.PERMISSION_GRANTED) {
-                        onPermissionDenied?.invoke(arrayOf(permission))
+                        onPermissionDenied?.invoke(permission, requestCode)
                     } else {
-                        onPermissionsGranted?.invoke()
+                        onPermissionsGranted?.invoke(permission, requestCode)
                     }
                 }
 
             } else {
                 permissions.forEachIndexed { index, permission ->
-                    onPermissionDenied?.invoke(arrayOf(permission))
+                    onPermissionDenied?.invoke(permission, requestCode)
                 }
             }
             return true
@@ -58,7 +58,7 @@ object PermissionManagerImpl : PermissionManager {
      *
      */
 
-    override fun checkPermissions(activity: Activity, permissions: Array<out String>, onPermissionsGranted: (() -> Unit)?, onPermissionDenied: ((Array<out String>) -> Unit)?, permissionRequestPreExecuteExplanation: PermissionRequestExplanation?, permissionRequestRetryExplanation: PermissionRequestExplanation?, requestCode: Int?): Boolean {
+    override fun checkPermissions(activity: Activity, permissions: Array<out String>, onPermissionsGranted: ((String, Int) -> Unit)?, onPermissionDenied: ((String, Int) -> Unit)?, permissionRequestPreExecuteExplanation: PermissionRequestExplanation?, permissionRequestRetryExplanation: PermissionRequestExplanation?, requestCode: Int?): Boolean {
 
         // check if new permission handling need to be respected (API >= 23)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -106,14 +106,18 @@ object PermissionManagerImpl : PermissionManager {
                 return false
             } else {
                 // all permissions has already been granted
-                onPermissionsGranted?.invoke()
+                permissions.forEachIndexed { _, permission ->
+                    onPermissionsGranted?.invoke(permission, usedRequestCode)
+                }
                 return true
 
             }
         } else {
 
             // the sdk is lower then API 23 so no permission handling needs to be used
-            onPermissionsGranted?.invoke()
+            permissions.forEachIndexed { _, permission ->
+                onPermissionsGranted?.invoke(permission, usedRequestCode)
+            }
             return true
         }
 

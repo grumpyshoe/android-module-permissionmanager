@@ -15,7 +15,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="44dp"
-        android:text="This App request the permissions:\n\n- Manifest.permission.ACCESS_FINE_LOCATION\n\non app start."
+        android:text="This App request the permissions:\n\n- Manifest.permission.ACCESS_FINE_LOCATION\n- Manifest.permission.ACCESS_COARSE_LOCATION\n\non button click."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
