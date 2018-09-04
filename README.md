@@ -6,7 +6,7 @@
   ![targetSDK 27](https://img.shields.io/badge/targetSDK-API_27-blue.svg)
 
   `Permissionmanager` is a small wrapper for handling [permission requests](https://developer.android.com/training/permissions/requesting).
-M
+
   ## Installation
 
 Add `jitpack` to your repositories in Project `build.gradle` :
@@ -60,13 +60,13 @@ permissionManager.checkPermissions(
 ```
 
 It's best practise to inform the user about why permission are needed before requesting them so you can define a `PermissionRequestExplanation` at  `permissionRequestPreExecuteExplanation` with information that explains this request.
-When adding this parameter, a AlertDialog will beshown before requestin permissions.
+When adding this parameter a AlertDialog will be shown before requesting permissions.
 
 If the user denies a permission first but another action requests this again because it's needed to do the job, then that's where `shouldShowRequestPermissionRationale` takes place.
 
   You can also define which titel should be shown by adding a `PermissionRequestExplanation` to the attribute `permissionRequestRetryExplanation`.
 
-  At leat you can define which *requestCode* should be used on permissino requests. The default is *_8102_*.
+  Last but not least you can define which *requestCode* should be used on permission requests. The default is *_8102_*.
 
 
   _Example implementation with all available attributes:_
@@ -95,8 +95,10 @@ permissionManager.checkPermissions(
 
 
 ## Troubleshooting
-Please make sure you have added corresponding permissions to yout Manifest, otherwise you get this response in Logcat without anythins noticable on UI-Screen:
+- Please make sure you have added corresponding permissions to yout Manifest, otherwise you get this response in Logcat without anythins noticable on UI-Screen:
 > PermissionManager: Permissions denied: [...]
+- If you are requesting the permissions `ACCESS_COARSE_LOCATION` and `ACCESS_FINE_LOCATION` be aware that *ACCESS_FINE_LOCATION* will mostly be granted while *ACCESS_COARSE_LOCATION* returns denied!
+See [StackOverflow](https://stackoverflow.com/a/33800252) for explaining this behavior. 
 
 
 ## Need Help or something missing?
