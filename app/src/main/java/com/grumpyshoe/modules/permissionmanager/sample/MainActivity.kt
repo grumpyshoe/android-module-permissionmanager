@@ -25,14 +25,10 @@ class MainActivity : AppCompatActivity() {
 
             permissionManager.checkPermissions(
                     activity = this,
-                    permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-                    onPermissionsGranted = { permission, _ ->
-                        Log.d("PermissionManager", "Permissions granted: $permission")
-                        result.onUI { it.text = "Permission Status:\n\n- GRANTED -" }
-                    },
-                    onPermissionDenied = { permission, requestCode ->
-                        Log.d("PermissionManager", "Permissions denied: $permission ($requestCode)")
-                        result.onUI { it.text = "Permission Status:\n\n- DENIED -" }
+                    permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_PHONE_STATE),
+                    onPermissionResult = { permissionResult ->
+                        Log.d("PermissionManager", "Permission resul\n- granted: ${permissionResult.getGranted()}\n- denied: ${permissionResult.getDenied()}")
+                        result.onUI { it.text = "Permission Status:\n\nGRANTED:\n${permissionResult.getGranted()}\n\nDENIED:\n${permissionResult.getDenied()}" }
                     },
                     permissionRequestPreExecuteExplanation = PermissionRequestExplanation(
                             title = "Pre Custom Permission Hint",

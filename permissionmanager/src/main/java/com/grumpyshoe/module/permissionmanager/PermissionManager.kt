@@ -2,6 +2,7 @@ package com.grumpyshoe.module.permissionmanager
 
 import android.app.Activity
 import com.grumpyshoe.module.permissionmanager.model.PermissionRequestExplanation
+import com.grumpyshoe.module.permissionmanager.model.PermissionResult
 
 
 /**
@@ -23,7 +24,7 @@ interface PermissionManager {
      * check permission
      *
      */
-    fun checkPermissions(activity: Activity, permissions: Array<out String>, onPermissionsGranted: ((String, Int) -> Unit)?, onPermissionDenied: ((String, Int) -> Unit)?, permissionRequestPreExecuteExplanation: PermissionRequestExplanation? = null, permissionRequestRetryExplanation: PermissionRequestExplanation? = null, requestCode: Int? = null): Boolean
+    fun checkPermissions(activity: Activity, permissions: Array<out String>, onPermissionResult: ((PermissionResult) -> Unit)?, permissionRequestPreExecuteExplanation: PermissionRequestExplanation? = null, permissionRequestRetryExplanation: PermissionRequestExplanation? = null, requestCode: Int? = null): Boolean
 
 
     /**

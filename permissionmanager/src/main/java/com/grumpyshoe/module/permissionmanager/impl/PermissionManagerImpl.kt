@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import com.grumpyshoe.module.permissionmanager.PermissionManager
 import com.grumpyshoe.module.permissionmanager.model.PermissionRequestExplanation
+import com.grumpyshoe.module.permissionmanager.model.PermissionResult
 import com.grumpyshoe.permissionmanager.R
 import kotlin.coroutines.experimental.coroutineContext
 
@@ -23,8 +24,7 @@ import kotlin.coroutines.experimental.coroutineContext
 object PermissionManagerImpl : PermissionManager {
 
     private var usedRequestCode = PermissionManager.DEFAULT_PERMISSION_REQUEST_CODE
-    private var onPermissionsGranted: ((String, Int) -> Unit)? = null
-    private var onPermissionDenied: ((String, Int) -> Unit)? = null
+    private var onPermissionResult: ((PermissionResult) -> Unit)? = null
 
 
     /**
@@ -34,18 +34,18 @@ object PermissionManagerImpl : PermissionManager {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray): Boolean? {
         if (requestCode == usedRequestCode) {
             if (grantResults.isNotEmpty()) {
+                val result = mutableMapOf<String, Int>()
                 permissions.forEachIndexed { index, permission ->
-                    if (grantResults[index] != PackageManager.PERMISSION_GRANTED) {
-                        onPermissionDenied?.invoke(permission, requestCode)
-                    } else {
-                        onPermissionsGranted?.invoke(permission, requestCode)
-                    }
+                    result.put(permission, grantResults[index])
                 }
+                onPermissionResult?.invoke(PermissionResult(result, requestCode))
 
             } else {
+                val result = mutableMapOf<String, Int>()
                 permissions.forEachIndexed { index, permission ->
-                    onPermissionDenied?.invoke(permission, requestCode)
+                    result.put(permission, grantResults[index])
                 }
+                onPermissionResult?.invoke(PermissionResult(result, requestCode))
             }
             return true
         }
@@ -58,17 +58,16 @@ object PermissionManagerImpl : PermissionManager {
      *
      */
 
-    override fun checkPermissions(activity: Activity, permissions: Array<out String>, onPermissionsGranted: ((String, Int) -> Unit)?, onPermissionDenied: ((String, Int) -> Unit)?, permissionRequestPreExecuteExplanation: PermissionRequestExplanation?, permissionRequestRetryExplanation: PermissionRequestExplanation?, requestCode: Int?): Boolean {
+    override fun checkPermissions(activity: Activity, permissions: Array<out String>, onPermissionResult: ((PermissionResult) -> Unit)?, permissionRequestPreExecuteExplanation: PermissionRequestExplanation?, permissionRequestRetryExplanation: PermissionRequestExplanation?, requestCode: Int?): Boolean {
 
         // check if new permission handling need to be respected (API >= 23)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-            this.onPermissionsGranted = onPermissionsGranted
-            this.onPermissionDenied = onPermissionDenied
+            this.onPermissionResult = onPermissionResult
             usedRequestCode = requestCode ?: PermissionManager.DEFAULT_PERMISSION_REQUEST_CODE
 
             val notGrantedPermissionList = mutableListOf<String>()
-            permissions.forEachIndexed { index, permission ->
+            permissions.forEach { permission ->
                 if (ContextCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED) {
                     notGrantedPermissionList.add(permission)
                 }
@@ -106,18 +105,22 @@ object PermissionManagerImpl : PermissionManager {
                 return false
             } else {
                 // all permissions has already been granted
+                val result = mutableMapOf<String, Int>()
                 permissions.forEachIndexed { _, permission ->
-                    onPermissionsGranted?.invoke(permission, usedRequestCode)
+                    result.put(permission, PackageManager.PERMISSION_GRANTED)
                 }
+                onPermissionResult?.invoke(PermissionResult(result, usedRequestCode))
                 return true
 
             }
         } else {
 
             // the sdk is lower then API 23 so no permission handling needs to be used
-            permissions.forEachIndexed { _, permission ->
-                onPermissionsGranted?.invoke(permission, usedRequestCode)
+            val result = mutableMapOf<String, Int>()
+            permissions.forEach { permission ->
+                result.put(permission, PackageManager.PERMISSION_GRANTED)
             }
+            onPermissionResult?.invoke(PermissionResult(result, usedRequestCode))
             return true
         }
 
