@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">PermissionsManager</string>
+    <string name="permission_request_explanation_btn_grant_text">lala</string>
+</resources>
